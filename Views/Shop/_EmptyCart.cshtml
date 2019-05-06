@@ -1,0 +1,18 @@
+﻿@{ 
+    string Username = (string)ViewData["Username"];
+    string SessionId = (string)ViewData["SessionId"];
+}
+
+<div>
+    <table border="0" align="center">
+        <tr>
+            <th width="250px">Your Cart is Currently Empty!</th>
+            <td>
+                <form method="post">
+                    <input type="hidden" name="SessionId" value="@SessionId" />
+                    <input type="submit" formaction="Gallery" value="Browse Products" />
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>

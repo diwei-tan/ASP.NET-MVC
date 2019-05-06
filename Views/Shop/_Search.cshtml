@@ -1,0 +1,14 @@
+﻿@using ShoppingCart.Models;
+
+@{
+    string SessionId = (string)ViewData["SessionId"];
+}
+
+<div>
+    @using (Html.BeginForm("Gallery", "Shop", FormMethod.Post))
+    {
+        <input type="hidden" name="SessionId" value="@SessionId" />
+        @Html.TextBox("Search")
+        <input type="submit" value="Search">
+    }
+</div>

@@ -1,0 +1,17 @@
+﻿@{
+    string SessionId = (string)ViewData["SessionId"];
+}
+
+<div>
+    <table border="0" align="center">
+        <tr>
+            <th width="250px">You currently have no purchases!</th>
+            <td>
+                <form method="post">
+                    <input type="hidden" name="SessionId" value="@SessionId" />
+                    <input type="submit" formaction="http://localhost:53036/Shop/Gallery?SessionId=@SessionId" value="Browse Products" />
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>

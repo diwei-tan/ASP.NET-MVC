@@ -1,0 +1,136 @@
+﻿@using ShoppingCart.Models;
+
+@{
+    string SessionId = (string)ViewData["SessionId"];
+    TempCart Cart = (TempCart)Session[SessionId];
+    List<CartItem> ListOfItem = Cart.Items;
+    float Total = 0;
+    foreach (var item in ListOfItem)
+    {
+        Total += item.Quantity * item.Price;
+    }
+}
+
+<p style="float :left;">
+    <h2>View Cart</h2>
+</p>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .top {
+            margin-top: 0px;
+            padding-top: 5px;
+            padding-left: 10px;
+            height: 35px;
+            background: black;
+            color: white;
+        }
+
+        .mid {
+            margin-top: 0px;
+            height: 700px;
+            background: white;
+            padding: 20px;
+        }
+
+        .line {
+            margin-top: 20px;
+            background: darkcyan;
+            height: 300px;
+            white-space: nowrap;
+        }
+
+        .block {
+            width: 190px;
+            height: 300px;
+            position: relative;
+            margin-left: 70px;
+            background: blueviolet;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .image {
+            margin-top: 0px;
+            margin-left: 20px;
+            height: 160px;
+        }
+
+        .bot {
+            margin-bottom: 0px;
+            height: 100px;
+            background: yellow;
+        }
+    </style>
+</head>
+
+
+<p></p> <div class="top">
+    <a href="~/Shop/Gallery?SessionId=@SessionId" style="color:snow"><big>Continue Shopping</big></a>
+    &nbsp;&nbsp;&nbsp; <text>|</text> &nbsp;&nbsp;&nbsp;
+    <a href="~/Shop/Checkout?SessionId=@SessionId" style="color:snow;"><big>CheckOut</big></a>
+    <h3>Total: $@Total</h3>
+</div>
+<br />
+<br />
+
+@if (Total == 0)
+{
+    @Html.Partial("_EmptyCart")
+}
+else
+{
+    <form method="post">
+        <input type="hidden" name="SessionId" value="@SessionId" />
+        <table border="1" align="center">
+
+            @foreach (var item in ListOfItem)
+            {
+
+                <tr height="200px">
+                    <td width="350px">
+                        <table align="center">
+                            <tr>
+                                <td align="center"><img src=@item.ImageUrl width="110" height="90" /></td>
+                            </tr>
+                            <tr>
+                                <td align="center">@item.Name</td>
+                            </tr>
+                            <tr>
+                                <td align="center">@item.Description</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="350px">
+                        <table align="center">
+                            <tr>
+                                <td align="center">Price: $@item.Price</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Quantity:
+                                    <input type="submit" formaction="Cart?Id=@item.Id&cmd=minus" value="-" />
+                                    <text>@item.Quantity</text>
+                                    <input type="submit" formaction="Cart?Id=@item.Id&cmd=plus" value="+" />
+                                </td>
+                            </tr>
+
+                        </table>
+                    </td>
+
+                </tr>
+            }
+        </table>
+    </form>
+}
+
+<style type="text/css">
+    h3 {
+        color: snow;
+        margin-top: 1px;
+        margin-right: 8px;
+        float: right;
+    }
+</style>

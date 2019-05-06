@@ -1,0 +1,102 @@
+﻿@model ShoppingCart.Models.CustomerPurchase
+@using ShoppingCart.Models;
+@using System.Linq;
+@using ShoppingCart.Utilities;
+
+<h2>My Purchases</h2>
+
+@{
+    string Username = (string)ViewData["Username"];
+    string SessionId = (string)ViewData["SessionId"];
+    List<MyPurchaseModel> listOfPurchases = (List<MyPurchaseModel>)ViewData["CustomerPurchase"];
+    var groupedPurchases = listOfPurchases.GroupBy(x => new { x.Name, x.DatePurchased });
+}
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .top {
+            margin-top: 0px;
+            padding-top: 5px;
+            padding-left: 10px;
+            height: 35px;
+            background: black;
+            color: white;
+        }
+      
+
+    </style>
+</head>
+
+
+<aside class="top">
+    <big><a href="~/Shop/Gallery?Username=@Username&SessionId=@SessionId" style="display:inline;color:snow;align-items:center;">Home</a></big>
+    &nbsp;&nbsp;&nbsp; <text>|</text>  &nbsp;&nbsp;&nbsp;
+    <big><a href="~/Login/Logout?USername=@Username&SessionId=@SessionId" style="display:inline;color:snow;">Logout</a></big>
+</aside>
+<br />
+<br />
+
+@if (listOfPurchases.Count() == 0)
+{
+    @Html.Partial("_NoPurchases")
+}
+else
+{
+<table border="1" align="center">
+
+        @foreach (var group in groupedPurchases)
+        {
+            string dateOfPurchase = Util.DateFromUnix(group.ElementAt(0).DatePurchased);
+            <tr height="200px">
+                <td width="350px">
+                    <table align="center">
+                        <tr>
+                            <td align="center"><img src=@group.ElementAt(0).ImageUrl width="110" height="90" /></td>
+                        </tr>
+                        <tr>
+                            <td align="center">@group.ElementAt(0).Name</td>
+                        </tr>
+                        <tr>
+                            <td align="center">@group.ElementAt(0).Description</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="button" value="Download" /></td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="350px">
+                    <table align="center">
+                        <tr>
+                            <td align="center">Purchased On: @dateOfPurchase</td>
+                        </tr>
+                        <tr>
+                            <td align="center">Quantity: @group.Count()</td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <label>Activation Code:   </label>
+                                
+                                    @if (group.Count() <= 1)
+                                    {
+                                        @group.ElementAt(0).ActivationCode;
+                                    }
+                                    else
+                                    {
+                                        <select>
+                                            
+                                                @foreach (var purchase in group)
+                                                {
+                                                    <option>@purchase.ActivationCode</option>
+                                                }
+                                        </select>
+                                    }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+        }
+</table>
+}

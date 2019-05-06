@@ -1,0 +1,49 @@
+﻿@model ShoppingCart.Models.Customer
+
+<h1 style="text-align:center">Login</h1>
+
+@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+{
+    <table align="center">
+        <tr>
+            <td colspan="3">
+                @{
+                    if ((bool)ViewData["WrongPassword"] == true)
+                    {
+                        <span style="color:red">Username and/or Password does not exist, please try again.</span>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Username: </th>
+            <td class="textbox">@Html.TextBoxFor(x => x.Username)</td>
+            <td>@Html.ValidationMessageFor(x => x.Username)</td>
+        </tr>
+        <tr>
+            <th>Password: </th>
+            <td class="textbox">@Html.PasswordFor(x => x.Password)</td>
+            <td>@Html.ValidationMessageFor(x => x.Password)</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><Input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+    
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+}
+
+<style>
+    th, tr, td {
+        padding: 5px;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+</style>

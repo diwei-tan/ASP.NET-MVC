@@ -1,0 +1,149 @@
+﻿@using ShoppingCart.Models;
+@model ShoppingCart.Models.Product
+
+@{
+    //porting information used into view
+
+    string Username = (string)ViewData["Username"];
+    string SessionId = (string)ViewData["SessionId"];
+    List<Product> products = (List<Product>)ViewData["Products"];
+    string Search = (string)ViewData["Search"];
+
+    //Information about temporary cart
+    TempCart Cart = (TempCart)Session[SessionId];
+    List<CartItem> itemsInCart = Cart.Items;
+    int cartItemCount = 0;
+    foreach (var item in itemsInCart)
+    {
+        cartItemCount += item.Quantity;
+    }
+
+}
+
+<p style="float :left;">
+    <h2>Gallery</h2>
+</p>
+@using (Html.BeginForm("Cart", "Shop", FormMethod.Post))
+{
+    <input type="hidden" name="SessionId" value="@SessionId" />
+    <p><div-a><input type="submit" value="@cartItemCount" 
+                     style="float:right;border-radius:50%;background-color:white;color:black;"/>
+        </div-a>
+        <div-b><input type="image" name="submit" 
+                      src="~/Images/cart.jpg.png" border="0" alt="Submit" style="float:right;" />
+        </div-b>
+    </p>
+}
+    
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .top {
+            margin-top:0px;
+            padding-top:5px;
+            padding-left:10px;
+            height: 35px;
+            background: black;
+            color:white;
+        }
+        .move:hover {
+            cursor: pointer;
+            transform: translate(0,-10px);
+        }
+
+        .mid {
+            margin-top: 0px;
+            height: 700px;
+            background: white;
+            padding: 20px;
+        }
+
+        .line {
+            margin-top: 20px;
+            background: darkcyan;
+            height: 300px;
+            white-space: nowrap;
+        }
+
+        .block {
+            width: 190px;
+            height: 300px;
+            position: relative;
+            margin-left: 70px;
+            background: blueviolet;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .bot {
+            margin-bottom: 0px;
+            height: 100px;
+            background: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top">
+        <a href="http://localhost:53036/ViewPurchase/MyPurchase?Username=@Username&SessionId=@SessionId" style="color:snow" class="top-item"><big>MyPurchase</big></a>
+        &nbsp;&nbsp;&nbsp; <text>|</text> &nbsp;&nbsp;&nbsp;
+        <a href="http://localhost:53036/Login/Logout?Username=@Username&SessionId=@SessionId" style="color:snow" class=" top-item"><big>Logout</big></a>
+    </div>
+
+    <div class="menu-search">
+        <h3> Hello, @Username</h3>
+        <p style="color: #339966; font-size: 16px; font-weight: 700; float: left;">
+            Search What you want：&nbsp;&nbsp;&nbsp;
+            @Html.Partial("_Search")
+            @if (Search != null)
+            {
+                if (Search != "")
+                {
+                    @Html.Partial("_SearchResult")
+                }
+            }
+        </p>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="SessionId" value="@SessionId" />
+        <div class="row">
+            @foreach (var product in products)
+            {
+                <div class="col-sm-6 col-md-4">
+
+                    <div class="thumbnail" style="height:300px;">
+                        <img src=@product.ImageUrl width="110" height="90" />
+                        <div class="caption">
+                            <h3>@product.Name</h3>
+                            <p>@product.Description</p>
+                            <p>Price:$@product.Price</p>
+                           <p><input type="submit" formaction="Gallery?Id=@product.Id" value="Add to Cart"></p>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </form>
+</body>
+
+<style>
+
+    /* css注释说明： 背景为红色 */
+    .div-a {
+        position: absolute;
+        right: 50px;
+        top: 60px;
+    }
+
+    /* 背景为黄色 */
+    .div-b {
+        position: absolute;
+        right: 50px;
+        top: 50px;
+    }
+    /* DIV背景颜色为蓝色 */
+</style> 
