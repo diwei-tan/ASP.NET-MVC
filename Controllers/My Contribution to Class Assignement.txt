@@ -1,0 +1,8 @@
+Things I did:
+All Controllers and Models
+Created all the Utilities used in the program
+Setup of Data Entity Framework
+Compiled all the code to ensure that the code works
+
+Things I did not do:
+Design and code of the Views
